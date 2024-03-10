@@ -69,8 +69,14 @@ public class CustomerController {
     public ApiResponse withdraw(@PathVariable int index, @RequestBody Map<String, Double> requestBody) {
         double withdraw = requestBody.get("withdraw");
         if (customers.size() - 1 >= index) {
-           customers.get(index).setBalance(customers.get(index).getBalance() - withdraw);
-            return new ApiResponse("successfully withdraw " + withdraw + " new balance " + customers.get(index).getBalance());
+            if (withdraw <= customers.get(index).getBalance()){
+
+                customers.get(index).setBalance(customers.get(index).getBalance() - withdraw);
+                return new ApiResponse("successfully withdraw " + withdraw + " new balance " + customers.get(index).getBalance());
+
+            }else{
+                return new ApiResponse("You don't have the amount to withdraw! ");
+            }
         } else {
             return new ApiResponse("there no ID with number: " + index);
 
